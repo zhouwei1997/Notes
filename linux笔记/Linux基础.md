@@ -206,6 +206,46 @@ hostnamectl --pretty
 
 ## Linux文件管理
 
+### 文件管理命令
+
+#### 目录的创建与删除
+
+##### mkdir创建目录
+
+命令：mkdir 目录名
+
+语法：mkdir [选项] [目录名]
+
+常见参数：
+
+| 参数 | 作用             |
+| ---- | ---------------- |
+| -p   | 递归创建所有目录 |
+
+![image-20220422111300309](https://raw.githubusercontent.com/zhouwei1997/Image/master/202204221113415.png)
+
+##### rmdir删除目录
+
+基本语法：rmdir 目录名称
+
+常见参数：
+
+| 参数 | 作用           |
+| ---- | -------------- |
+| -p   | 递归删除空目录 |
+
+![image-20220422111855462](https://raw.githubusercontent.com/zhouwei1997/Image/master/202204221118535.png)
+
+#### 文件操作
+
+##### 创建
+
+##### 删除
+
+
+
+
+
 ## Linux用户管理
 
 ## 管道命令详解
