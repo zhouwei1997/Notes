@@ -149,11 +149,60 @@ ctrl + c
 ~~~shell
 #获取计算机的主机名
 hostname
-#设置计算机的主机名称
-host
+hostnamectl
 ~~~
 
+> CentOS7中主机名分为3类，静态的（static）、瞬态的（transient）和灵活的（pretty）
+>
+> 1. 静态static主机名称：电脑关机或重启后，设置的主机名称依然有效
+> 2. 瞬态transient主机名：临时主机名称，电脑关机或重启后，设置的名称就失效了
+> 3. 灵活pretty主机名称：可以包含一些特殊的字符
 
+
+
+> 修改主机名称永久生效
+>
+> 1、使用静态的主机名
+>
+> 2、修改/etc/hostname文件
+
+![image-20220422104628289](https://raw.githubusercontent.com/zhouwei1997/Image/master/202204221046374.png)
+
+#### 瞬态主机名设置
+
+~~~shell
+# hostnamectl  --transient set-hostname 主机名
+hostnamectl  --transient set-hostname yunwei-01
+# 立即生效
+su
+~~~
+
+![image-20220422105303044](https://raw.githubusercontent.com/zhouwei1997/Image/master/202204221053117.png)
+
+#### 静态主机名称
+
+~~~shell
+# hostnamectl  --static set-hostname 主机名
+# --static 可以省略
+hostnamectl  --static set-hostname zhouwei-01
+# 立即生效
+su
+~~~
+
+![image-20220422105454122](https://raw.githubusercontent.com/zhouwei1997/Image/master/202204221054191.png)
+
+#### 灵活主机名称
+
+~~~shell
+# hostnamectl  --pretty set-hostname 主机名
+hostnamectl  --pretty set-hostname itcast@#
+# 立即生效
+su
+# 查看灵活的主机名称
+hostnamectl --pretty
+~~~
+
+![image-20220422105934374](https://raw.githubusercontent.com/zhouwei1997/Image/master/202204221059433.png)
 
 ## Linux文件管理
 
