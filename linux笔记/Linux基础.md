@@ -240,23 +240,308 @@ hostnamectl --pretty
 
 ##### 创建
 
+命令：touch
+
+语法：touch 文件路径 [文件路径2 文件路径3...]
+
+~~~shell
+# 在当前目录下创建一个readme.txt文件
+touch readme.txt
+~~~
+
+![image-20220422162946933](https://raw.githubusercontent.com/zhouwei1997/Image/master/202204221629027.png)
+
+~~~shell
+# 根据序号同时创建多个文件，在当前路径下生成1.txt/2.txt/...5.txt
+# 1 表示开始的数字
+# .. 表示连续的
+# 5 表示结束的数字
+touch {1..5}.txt
+~~~
+
+![image-20220422165056357](https://raw.githubusercontent.com/zhouwei1997/Image/master/202204221650455.png)
+
 ##### 删除
 
+命令：rm
 
+作用：删除文件或文件夹
 
+语法：rm [参数选项] 文件或文件夹
 
+选项：
+
+| 选项 | 说明                                                         |
+| ---- | ------------------------------------------------------------ |
+| -r   | 递归删除。只要用于删除目录，可删除指定目录及包含的所有内容，包括所有子目录和文件 |
+| -f   | 强制删除。不提示任何选项                                     |
+
+![image-20220422171506790](https://raw.githubusercontent.com/zhouwei1997/Image/master/202204221715866.png)
+
+##### 复制
+
+基本语法：cp [选项] 源文件或文件夹   目录地址
+
+选项说明：
+
+| 选项 | 说明                     |
+| ---- | ------------------------ |
+| -r   | 递归复制，主要针对文件夹 |
+
+![image-20220428105754157](https://raw.githubusercontent.com/zhouwei1997/Image/master/202204281057281.png)
+
+~~~shell
+# cp复制并重命名文件
+# cp [选项] 源文件或文件夹   目录路径/新文件或新文件夹名称
+~~~
+
+##### 剪切与重命名
+
+命令：mv
+
+作用：可以在不同的目录之间移动文件或目录，也可以对文件和目录进行重命名
+
+语法：mv [参数] 源文件 目标路径（不指定文件名）
+
+~~~shell
+# 剪切操作
+mv /root/readme.txt /home/readme.txt
+
+# 重命名
+mv readme.txt rea.txt
+~~~
+
+### 打包压缩与解压缩
+
+#### tar压缩与解压缩
+
+基本语法：tar [选项] 打包后的名称.tar 多个文件或文件夹
+
+选项说明：
+
+| 选项 | 说明                   |
+| ---- | ---------------------- |
+| -c   | 打包                   |
+| -f   | 打包后的文件名称       |
+| -v   | 显示打包的进度         |
+| -u   | 更新原打包文件中的文件 |
+| -t   | 查看打包的文件内容     |
+| -z   | 压缩为gz格式           |
+| -x   | 释放tar包中的文件      |
+| -j   | 压缩为bz2格式          |
+| -J   | 压缩为xz格式           |
+
+~~~shell
+# 把 a.txt b.txt c.txt文件打包的abc.tar文件中
+tar -cvf abc.tar a.txt b.txt c.txt
+
+# 查看tar包后的文件信息
+# tar -tf 打包后的文件名称
+tar -tf abc.tar
+
+# 更新打包后的文件
+# tar -uf 打包后的文件名称
+tar -uf abc.tar d.txt
+
+# 释放tar中的文件
+# tar -xf 打包后的文件名称
+tar -xf abc.tar
+~~~
+
+~~~shell 
+# 打包并压缩
+# tar [选项] 压缩后的压缩包名称  要压缩的文件或文件夹
+tar -zcvf 123.tar.gz 1.txt 2.txt 3.txt
+tar -jcvf 123.tar.bz2 1.txt 2.txt 3.txt
+tar -Jcvf 123.tar.xz 1.txt 2.txt 3.txt
+~~~
+
+>压缩速度：gzip >bzip2>xz
+>
+>压缩率：xz>bzip2>gzip
+
+~~~shell 
+# 解压缩操作
+tar -zxvf 123.tar.gz 
+tar -jxvf 123.tar.bz2 
+tar -Jxvf 123.tar.xz 
+~~~
+
+#### zip压缩
+
+命令：zip
+
+作用：兼容类Unix和windows，可以压缩多个文件或目录
+
+语法：zip [参数] 压缩后的文件 需要压缩的文件（可以是多个文件）
+
+参数说明：
+
+| 参数 | 说明                   |
+| ---- | ---------------------- |
+| -r   | 递归压缩（压缩文件夹） |
+
+~~~shell
+# 文件压缩
+zip 1.zip 1.txt
+~~~
+
+#### unzip解压缩
+
+基本语法：unzip 压缩包名称  [选项] [指定解压路径]
+
+选项说明：
+
+| 选项 | 说明             |
+| ---- | ---------------- |
+| -d   | 解压到指定路径下 |
+
+```shell
+# unzip解压缩
+unzip 1.zip -d /home/nginx/
+```
+
+### wc命令
+
+命令：wc
+
+作用：用于统计文件内容信息（包含行数、单词数、字节数）
+
+语法：wc [参数选项]  文件名
+
+参数选项：
+
+| 参数 | 作用                               |
+| ---- | ---------------------------------- |
+| -l   | 行数（以回车/换行符为标准）        |
+| -w   | 单词数（依照空格数来判断单词数量） |
+| -c   | 字节数（空格、回车、换行）         |
+
+~~~shell
+# wc -lwc 文件名
+# 统计/var/log/boot.log文件的行数，单词数，字节数
+wc -lwc /var/log/boot.log
+# wc命令选项可以混在一起搭配使用，但选项的顺序不影响删除的结果，第一个是行数，第二个是单词数，第三个是字节数
+~~~
+
+![image-20220506100713518](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205061007590.png)
+
+### du命令
+
+命令：du
+
+作用：查看文件或目录（递归显示子目录）占用磁盘大小
+
+语法：du [参数选项] 文件名或目录名
+
+参数：
+
+| 参数 | 说明                                                         |
+| ---- | ------------------------------------------------------------ |
+| -s   | 只显示汇总的大小，统计文件夹的大小                           |
+| -h   | 表示以高可读性的形式进行显示，如果不使用-h，默认使用KB的形式显示文件大小 |
+
+```shell
+# du 文件名
+# 统计/var/log/boot.log文件大小
+du /var/log/boot.log
+
+# du -h 文件名
+# 统计/var/log/boot.log文件大小，以高可读性显示
+du -h /var/log/boot.log
+```
+
+![image-20220506101936719](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205061019800.png)
+
+### find命令
+
+命令：find
+
+作用：用于查找文档
+
+语法：find 路径范围 选项1 选项1的值 [选项2 选项2的值...]
+
+常用参数：
+
+| 参数  | 说明                                                         |
+| ----- | ------------------------------------------------------------ |
+| -name | 按照文档名称进行搜索（支持模糊搜索）                         |
+| -type | 按照文档类型进行搜索，文档类型的值 f-->表示文件，d-->表示文件夹 |
+
+~~~shell
+# 在/var/目录下，查找名称为boot.log，类型是文件的文档
+find /var/ -name boot.log -type f
+~~~
+
+![image-20220506103421782](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205061034850.png)
+
+~~~shell
+# 全盘搜索ssh目录
+find /* -name "ssh" -type d
+~~~
+
+![image-20220506103706755](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205061037827.png)
+
+~~~shell 
+# 搜索/var/log/目录下所有以".log"结尾的文件信息
+find /* -name *.log -type f
+~~~
+
+![image-20220506104049133](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205061040228.png)
+
+### grep命令
+
+命令：grep
+
+作用：在文件中直接查找到包含指定信息的那些行，并把这些信息高亮显示出来
+
+语法：grep [选项] 要查找的内容 文件名
+
+选项说明：
+
+| 选项 | 说明                         |
+| ---- | ---------------------------- |
+| -n   | 代表显示包含关键词的行号信息 |
+| -r   | 递归查找                     |
+
+~~~shell
+# grep 查找的内容 文件名
+# 在boot.log文件中，查找包含network的行
+grep network boot.log
+~~~
+
+![image-20220506104635002](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205061046091.png)
+
+~~~shell
+# grep -r 查找的内容 多个文件
+grep -r network /var/log/*
+~~~
+
+![](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205061049087.png)
 
 ## Linux用户管理
 
+
+
 ## 管道命令详解
+
+
 
 ## Linux网络配置与远程管理
 
+
+
 ## 权限管理
+
+
 
 ## 系统服务
 
+
+
 ## Linux进程检测与进程管理
+
+
 
 ## 阿里云与开源项目上线部署实战
 
