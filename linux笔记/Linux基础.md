@@ -715,17 +715,66 @@ usermod -s /sbin/login linuxuser
 | ---- | -------------------------------- |
 | -r   | 删除用户的同时，删除用户的家目录 |
 
-## 管道命令详解
+## 管道
 
+### 管道符
 
+管道符：|
 
+作用：管道是一种通信机制，通常用于进程间的通信。他表现出来的形式将前面每一个进程的输出直接作为下一个进程的输入
 
+![image-20220507154635793](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205071546879.png)
 
+>0：标准输入。进程需要外部的某些程序传递相应的参数，才能正常运行
+>
+>1：标准输出。程序或命令正确的执行结果
+>
+>2：标准错误。程序或命令错误的执行结果
 
+### 过滤（筛选）功能
 
+基本语法：前一个命令 | 后一个命令
 
+~~~shell
+# 获取根目录下包含关键字"y"的文件信息
+ls / | grep "y"
+~~~
 
-## Linux网络配置与远程管理
+~~~shell
+# 检索系统已安装文件，只筛选mariadb信息
+rpm -qa | grep mariadb
+~~~
+
+![image-20220507155716653](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205071557729.png)
+
+### 统计功能
+
+~~~shell
+# 统计根目录下一共有多少个文件
+ls / | wc -l
+~~~
+
+![image-20220507160656121](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205071606208.png)
+
+~~~shell 
+# 查看/etc/group文件多少行
+cat /etc/group | wc -l
+~~~
+
+![image-20220507160928136](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205071609218.png)
+
+### xargs命令
+
+>由于部分命令不支持管道符，所以需要使用xargs命令来进行补充
+
+~~~shell
+# 搜索etc目录下所有conf结尾的信息，然后以详细列表显示
+find /etc -name "*.conf" | xargs ls -l
+~~~
+
+![image-20220507161224113](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205071612230.png)
+
+## 网络配置与远程管理
 
 
 
