@@ -774,15 +774,69 @@ find /etc -name "*.conf" | xargs ls -l
 
 ![image-20220507161224113](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205071612230.png)
 
-## 网络配置与远程管理
+## 网络配置
 
+### ifconfig查看网络信息
 
+命令：ifconfig
 
+作用：查看网卡信息
 
+![image-20220507163044111](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205071630212.png)
 
+### 网卡配置文件
 
+Linux的网卡配置文件`/etc/sysconfig/network-scripts/ifcfg-ens33`
 
+~~~shell 
+vim /etc/sysconfig/network-scripts/ifcfg-ens33
 
+TYPE="Ethernet"   # 网络类型 Ethernet-->以太网
+PROXY_METHOD="none"
+BROWSER_ONLY="no"
+BOOTPROTO="none"   # IP获取方式,DHCP-->动态获取  static/none--> 手工设置
+DEFROUTE="yes"
+IPV4_FAILURE_FATAL="no"
+IPV6INIT="yes"
+IPV6_AUTOCONF="yes"
+IPV6_DEFROUTE="yes"
+IPV6_FAILURE_FATAL="no"
+IPV6_ADDR_GEN_MODE="stable-privacy"
+NAME="ens33"  # 网卡名称
+UUID="9e3abe7f-ed72-4ce8-bcae-1a926e81984c" # 代表网卡的UUID编号（必须唯一）
+DEVICE="ens33" # 设备名称
+ONBOOT="yes" # 网卡是否开机启动
+IPADDR="192.168.31.105"
+PREFIX="24"
+GATEWAY="192.168.31.2"
+DNS1="223.5.5.5"
+DNS2="223.6.6.6"
+IPV6_PRIVACY="no"
+~~~
+
+### 查看网卡状态
+
+~~~shell
+# 查询网卡状态
+systemctl status network
+
+# 网卡启动/停止/重启
+systemctl start|stop|restart network
+~~~
+
+## 远程管理
+
+#### SSH协议
+
+SSH是用于计算机质检的加密登录协议
+
+#### sshd服务
+
+~~~shell
+systemctl status sshd
+~~~
+
+![image-20220507165043978](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205071650109.png)
 
 ## 权限管理
 
