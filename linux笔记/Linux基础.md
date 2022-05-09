@@ -840,13 +840,203 @@ systemctl status sshd
 
 ## 权限管理
 
+在多用户计算机系统的管理中，权限是指某个特定用户具有特定的系统资源使用权限。
 
+|       | 权限针对文件                                              | 权限针对目录                                                 |
+| ----- | --------------------------------------------------------- | ------------------------------------------------------------ |
+| 读r   | 表示可以查看文件内容；cat                                 | 表示可以（ls）查看目录中存在的文件名称                       |
+| 写w   | 表示可以更改文件的内容；vim修改，保存退出                 | 表示是否可以删除目录中的子文件或者新建子目录（rm/touch/mkdir） |
+| 执行x | 表示是否可以开启文件当中记录的程序，一般指二进制文件(.sh) | 表示是否可以进入目录（cd）                                   |
 
+> 一般给予目录读权限，也会给予执行权限
 
+### 普通权限管理
 
+![image-20220509104702343](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205091047457.png)
 
+~~~shell
+-rwxr-xr-x. 1 root root 4364 4月  28 2021 poweroff-vm-default
+第一列：文件类型和权限
+第二列：文件的节点数
+第三列：文件的拥有者
+第四列：文件的所属组
+第五列：文件大小
+第六列：文件的最后修改时间
+第七列：文件的名称
+~~~
 
+![image-20220509105759821](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205091057918.png)
 
+### 设置文件/目录权限
+
+命令：chmod
+
+语法：chmod [选项] 权限模式 文件/目录
+
+作用：增加或减少当前文件所有者的权限
+
+| 选项 | 说明                                 |
+| ---- | ------------------------------------ |
+| -R   | 递归设置权限（当为文件夹的时候使用） |
+
+>要给文件设置权限，操作者只能是root或文件的所有者
+
+#### 字母形式
+
+1. 确认要给那个身份设置权限。u-拥有者/g-所属组/o-其他/ugo(a)-所有
+2. 确认是添加权限（+）、删除权限（-）、赋予权限（=）
+3. 确认给这个用户针对这个文件或文件夹设置什么样的权限 r/w/x
+
+~~~shell
+# 给readme.txt文件的拥有者增加一个可执行文件
+chmod u+x readme.txt
+# 给readme.txt文件的拥有者的可执行权限去除
+chmod u-x readme.txt
+# 给readme.txt文件的所属组内的用户赋予rw权限
+chmod g=rw readme.txt
+# 给shop目录及内部的文件统一添加w可写权限
+chmod -R ugo+w shop
+chmod -R a+w
+~~~
+
+#### 数字形式
+
+| 权限 | 对应数字 | 含义     |
+| ---- | -------- | -------- |
+| r    | 4        | 可读     |
+| w    | 2        | 可写     |
+| x    | 1        | 可执行   |
+| -    | 0        | 没有权限 |
+
+~~~shell
+# 给readme.txt文件设置权限，文件拥有者rwx、组内用户rw、其他用户r
+chmod 764 readme.txt
+# 给shop文件夹设置777权限
+chmod -R 777 shop
+~~~
+
+### 文件拥有者和所属组
+
+#### 文件拥有者设置
+
+基本语法：chown [选项] 新文件拥有者 文件名称
+
+| 选项 | 说明                       |
+| ---- | -------------------------- |
+| -R   | 递归修改（主要针对文件夹） |
+
+~~~shell
+# 把/root/readme.txt文件的拥有者更改为linuxuser
+chown linuxuser /root/readme.txt
+# 把/root/shop文件夹的拥有者更改为linuxuser
+chown -R linuxuser /root/shop
+~~~
+
+#### 文件所属组的设置
+
+基本语法：chgrp [选项] 新文件所属组 文件名称
+
+| 选项 | 说明                       |
+| ---- | -------------------------- |
+| -R   | 递归修改（主要针对文件夹） |
+
+~~~shell
+# 把/root/readme.txt文件的所属组更改为itheima
+chgrp itheima /root/readme.txt
+# 把/root/shop文件夹的拥有组更改为itheima
+chgrp -R linuxuser /root/shop
+~~~
+
+#### 同时修改属组和属主
+
+基本语法：
+
+chown [选项] 文件拥有者: 文件所属组 文件名称
+
+chown [选项] 文件拥有者 . 文件所属组 文件名称
+
+| 选项 | 说明                       |
+| ---- | -------------------------- |
+| -R   | 递归修改（主要针对文件夹） |
+
+~~~shell
+# 把/root/shop文件夹的拥有组更改为root
+chmod -R root:root /root/shop
+chmod -R root.root /root/shop
+~~~
+
+### 特殊位S
+
+作用：让一般使用者临时具有该文件的属组/主的执行权限
+
+> 只要针对二进制文件
+
+![image-20220509140733610](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205091407698.png)
+
+~~~powershell
+# 去除s位权限
+chmod u-s /usr/bin/passwd
+chmod 0755 /usr/bin/passwd
+
+# 添加s位权限
+chmod u+s /usr/bin/passwd
+chmod 4755 /usr/bin/passwd
+~~~
+
+### 粘滞位T
+
+作用：只允许文件的创建者和root用户删除文件
+
+| 选项 | 说明       |
+| ---- | ---------- |
+| o+t  | 添加粘滞位 |
+| o-t  | 去除粘滞位 |
+
+> 主要针对文件夹
+
+~~~shell
+# 语法
+chmod -R o+t 文件夹的名称
+chmod -R 1777 文件夹的名称
+~~~
+
+![image-20220509143547636](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205091435736.png)
+
+### ACL权限控制
+
+ACL（Access Control List）访问控制列表，在Linux系统中，ACL可实现对单一用户设定访问文件权限。
+
+> ACL权限可以针对某个用户，也可以针对某个组
+>
+> ACL优势就是让权限控制更加精准
+
+#### 获取某个文件的ACL权限
+
+基本语法：getfacl 文件/目录名称
+
+~~~shell
+getfacl /root/shop
+~~~
+
+![image-20220509144712097](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205091447197.png)
+
+#### 给某个文件设置ACL权限
+
+基本语法：setfacl [选项]  u/g: 用户名 : 权限 文件/目录名称
+
+| 选项 | 说明                  |
+| ---- | --------------------- |
+| -m   | 修改ACL策略           |
+| -x   | 去掉某个用户/组的权限 |
+| -b   | 删除所有的ACL策略     |
+| -R   | 递归，常用于文件夹    |
+
+~~~shell
+# 针对readme.txt文件给Linuxuser设置一个可读权限
+setfacl -m u:linuxuser:r readme.txt
+# 针对readme.txt文件给bjhr组设置一个可读可写权限
+setfacl -m g:bjhr:rw readme.txt
+~~~
 
 ## 系统服务
 
