@@ -1309,21 +1309,259 @@ atrm 任务号
 
 ![image-20220513103938126](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131039206.png)
 
-## Linux进程检测与进程管理
+## 进程检测与管理
 
+**进程**是正在执行的一个程序或命令，每个进程都是一个运行的实体，并占用一定的系统资源。
 
+**程序**是人使用计算语音编写的可以实现特定目标或解决特定问题的代码集合
 
+### top命令
 
+#### top查看CPU使用情况
 
+命令：top
 
+作用：查看服务器的进程占用资源（100%使用）
 
+语法：top
 
+交换操作快捷键
 
+| 快捷键    | 说明                                          |
+| --------- | --------------------------------------------- |
+| W(大写)   | 表示将结果按照内存（MEM）从高到底进行降序排列 |
+| P（大写） | 表示将结果按照CPU使用率从高到低进行降序配列   |
 
+![image-20220513132311594](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131323710.png)
 
+##### 第一行
 
+![image-20220513133933044](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131339130.png)
 
-## 阿里云与开源项目上线部署实战
+| 内容                            | 说明                                                         |
+| ------------------------------- | ------------------------------------------------------------ |
+| 13:23:02                        | 系统当前时间                                                 |
+| up 5 min                        | 系统的运行时间                                               |
+| 1 user                          | 当前系统登录了2个用户                                        |
+| load averages 0.44 , 0.16, 0.06 | 系统在之前的1分钟，5分钟，15分钟的平均负载；如果CPU是单核的，则数字超过1就是高负载，如果CPU是4核的，则数字超过4就是高负载 |
+
+> 查看CPU的总核心数
+>
+> grep 'core id' /proc/cpuinfo | sort -u | wc -l
+
+##### 第二行
+
+![image-20220513134003348](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131340428.png)
+
+| 内容         | 说明                                            |
+| ------------ | ----------------------------------------------- |
+| Tasks        | 系统中的进程总数                                |
+| 1 running    | 正在运行的进程数                                |
+| 101 sleeping | 睡眠的进程数                                    |
+| 0 stopped    | 正在停止的进程数                                |
+| 0 zombie     | 僵尸进程数，如果不是0，则需要手动检查下僵尸进程 |
+
+##### 第三行
+
+![image-20220513134022397](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131340478.png)
+
+| 内容 | 说明                                                         |
+| ---- | ------------------------------------------------------------ |
+| %CPU |                                                              |
+| us   | 用户模式占用的CPU百分比                                      |
+| sy   | 系统模式占用的CPU百分比                                      |
+| ni   | 改变过优先级的用户进程占用的CPU百分比                        |
+| id   | 空闲CPU占用的CPU百分比                                       |
+| wa   | 等待输入/输出的进程占用的CPU百分比                           |
+| hi   | 硬中断请求服务占用的CPU百分比                                |
+| si   | 软中断请求服务占用的CPU百分比                                |
+| st   | 虚拟时间百分比，就是当有虚拟机时，虚拟CPU等待实际CPU时间的百分比 |
+
+##### 第四行
+
+![image-20220513134039533](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131340613.png)
+
+| 内容       | 说明           |
+| ---------- | -------------- |
+| KiB Mem    | 内存           |
+| total      | 物理内存的总量 |
+| free       | 空闲内容总量   |
+| used       | 已使用内存总量 |
+| buff/cache | 缓存           |
+
+##### 第五行
+
+![image-20220513134054332](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131340413.png)
+
+| 内容       | 说明           |
+| ---------- | -------------- |
+| KiB SWAP   | swap交换内存   |
+| total      | 物理内存的总量 |
+| free       | 空闲内容总量   |
+| used       | 已使用内存总量 |
+| buff/cache | 缓存           |
+
+#### top查看系统进程信息
+
+![image-20220513154134358](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131541476.png)
+
+| 内容   | 说明                                                         |
+| ------ | ------------------------------------------------------------ |
+| PID    | 进程的id号                                                   |
+| USER   | 该进程所属的用户                                             |
+| PR     | 优先级，数值越小优先级越高                                   |
+| NI     | NICE优先级，数值越小优先级越高，取值范围-20到19，默认为0     |
+| VIRT   | 该进程使用的虚拟内存的大小，单位KB                           |
+| RES    | 该进程使用的物理内存的大小，单位KB                           |
+| SHR    | 共享内存大小，单位KB。<br>计算一个进程实际使用使用的内存=常驻内存（RES）-共享内存（SHR） |
+| S      | 进程状态。其中S表示睡眠，R表示运行                           |
+| %CPU   | 该进程占用CPU的百分比                                        |
+| %MEM   | 该进程占用内存的百分比                                       |
+| TIME+  | 该进程共占用CPU的时间                                        |
+| COMMON | 进程名称                                                     |
+
+### ps命令
+
+命令：ps
+
+语法：ps [参数选项]
+
+作用：查看服务器的进程信息
+
+| 选项 | 作用           |
+| ---- | -------------- |
+| -e   | 列出全部的进程 |
+| -f   | 显示全部的类   |
+
+![image-20220513160647121](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131606249.png)
+
+| 列    | 说明                                                         |
+| ----- | ------------------------------------------------------------ |
+| UID   | 该进程执行的用户ID                                           |
+| PID   | 进程ID                                                       |
+| PPID  | 该进程的父进程ID，如果找不到，则该进程就被称之为僵尸进程     |
+| C     | CPU的占用率，百分数显示                                      |
+| STIME | 进程的启动时间                                               |
+| TTY   | 终端设备，发起该进程的设备识别符号，如果显示为？则表示该进程并不是由终端设备发起的 |
+| TIME  | 进程实际使用CPU的时间                                        |
+| CMD   | 该进程的名称或者对应的路径                                   |
+
+~~~shell
+ps aux
+~~~
+
+![image-20220513161431093](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131614220.png)
+
+### df命令
+
+作用：查看磁盘的剩余空间
+
+~~~shell
+df -h
+~~~
+
+![image-20220513160333262](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131603351.png)
+
+### free命令
+
+命令：free
+
+作用：查看内存使用情况
+
+![image-20220513160119835](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131601923.png)
+
+### kill命令
+
+命令：kill
+
+作用：kill命令会向操作系统内核发送一个信号（多为终止信号）和目标进程的PID，然后系统内核根据收到信号类型，对指定进程进行相应的操作
+
+语法：kill [信号] PID
+
+| 信号 | 说明                     |
+| ---- | ------------------------ |
+| 9    | 杀死进程，即强制结束进程 |
+| 15   | 正常结束进程             |
+
+~~~shell
+kill -9  623
+kill -15 6235
+~~~
+
+### killall命令
+
+命令：killall
+
+语法：kill [信号] 进程名称
+
+~~~shell
+killall crond
+killall httpd
+~~~
+
+### netstat命令
+
+命令：netstat
+
+作用：查看网络连接状态
+
+语法：netstat -nlpt
+
+| 选项 | 说明                                                       |
+| ---- | ---------------------------------------------------------- |
+| -t   | 只列出tcp协议连接                                          |
+| -n   | 表示将地址从字母组合转化为ip地址，将协议转化为端口号来显示 |
+| -l   | 表示过滤出‘state（状态）’列中其值为LISTEN的连接            |
+| -p   | 表示显示发起连接的进程pid和进程名称                        |
+
+![image-20220513161740175](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131617273.png)
+
+### 进程优先级管理
+
+#### 查看进程的优先级
+
+PR优先级：数值越小优先级越高
+
+NI优先级：数值越小优先级越高，可以人为修改
+
+####  调整优先级
+
+##### 使用top按r来调整
+
+1. 运行top命令获取需要调整的进程信息（PID编号）
+
+    ~~~shell
+    top -bn 1
+    ~~~
+
+    ![image-20220513164117964](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131641106.png)
+
+2. 运行top命令，然后按"r"，输入需要调整进程的PID
+
+    ~~~shell
+    top
+    # 输入后按r
+    # 输入需要调整的PID号
+    ~~~
+
+    ![image-20220513164357438](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131643556.png)
+
+3. 根据提示，重置NICE值
+
+    ![image-20220513164506644](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131645740.png)
+
+4. 按q退出top模式，使用`top -p PID`编号，只查询某个进程
+
+##### 命令行使用renice命令调整进程的优先级
+
+基本语法：renice [NI优先级设置的数字] 想调整的进程ID
+
+~~~shell
+# 使用renice调整atd的优先级
+renice -5 696
+~~~
+
+![image-20220513164859242](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131648356.png)
 
 
 
