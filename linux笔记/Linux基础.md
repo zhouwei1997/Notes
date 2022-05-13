@@ -1040,13 +1040,274 @@ setfacl -m g:bjhr:rw readme.txt
 
 ## 系统服务
 
+### systemctl管理服务
+
+命令：systemctl 
+
+作用：管理服务
+
+语法：systemctl [选项] 服务名
+
+| 选项    | 说明                       |
+| ------- | -------------------------- |
+| status  | 检查指定服务的运行状态     |
+| start   | 启动指定服务               |
+| stop    | 停止指定服务               |
+| restart | 重启指定服务               |
+| reload  | 出现加载指定服务的配置文件 |
+| enable  | 指定服务开机自启动         |
+| disable | 取消指定服务开机自启动     |
+
+#### 显示系统服务
+
+语法：systemctl [选项]
+
+| 选项                            | 说明                               |
+| ------------------------------- | ---------------------------------- |
+| list-units --type service --all | 列出所有服务（包括已启动和未启的） |
+| list-units --type service       | 列出所有启动的服务                 |
+
+~~~shell
+# 列出linux的所有服务
+systemctl list-units --type service --all
+# 列出linux的启动的服务
+systemctl list-units --type service
+# 筛选出想要的服务信息
+systemctl list-units --type service | grep sshd
+~~~
+
+### NTP时间同步服务
+
+NTP（Network Time Protocol）网络时间协议，是用来同步网络中各个计算机时间的协议
+
+#### NTP时间同步操作
+
+##### 手工同步
+
+命令：ntpdate 时间服务器IP/域名
+
+~~~shell
+# 从服务器cn.ntp.org.cn同步标准时间
+ntpdate cn.ntp.org.cn
+~~~
+
+> 从网络同步时间，要确保自己的服务器可以访问互联网
+
+##### 自动同步
+
+~~~shell
+# 启动ntpd服务，并设置为开机启动
+systemctl start ntpd
+systemctl enable ntpd
+~~~
+
+NTP服务的配置文件位置`/etc/ntp.conf`
+
+### 防火墙
+
+#### firewalld防火墙
+
+firewalld增加了区域（zone）的概念，指的是firewalld预先准备了几套防火墙策略的集合。
+
+| 区域     | 默认策略                                                     |
+| -------- | ------------------------------------------------------------ |
+| trusted  | 允许所有数据包                                               |
+| home     | 拒绝流入的流量，除非与流出的流量相关，允许ssh/mdns/ipp-client/amba-client/dhcpv6-client服务通过 |
+| internal | 等同于home                                                   |
+| work     | 拒绝流入的流量，除非与流出的流量相关，允许ssh/ipp-client/dhcpv6-client服务通过 |
+| public   | 拒绝流入的流量，除非与流出的流量相关，允许ssh/dhcpv6-client服务通过 |
+| external | 拒绝流入的流量，除非与流出的流量相关，允许ssh服务通过        |
+| dmz      | 拒绝流入的流量，除非与流出的流量相关，允许ssh服务通过        |
+| block    | 拒绝流入的流量，除非与流出的流量相关，非法流量采取拒绝操作   |
+| drop     | 拒绝流入的流量，除非与流出的流量相关，非法流量采取拒绝操作   |
+
+#### 运行模式和永久模式
+
+运行模式：此模式下，配置的防火墙策略立即生效，但是不写入配置文件
+
+永久模型：此模式下，配置的防火墙策略写入配置文件，但是需要reload重新加载才能生效
+
+#### firewalld防火墙规则
+
+命令：firewall-cmd
+
+作用：管理firewalld具体配置
+
+语法：firewall-cmd [参数选项1]...[参数选项n]
+
+##### 查看防火墙默认的区域
+
+~~~shell
+firewall-cmd --get-default-zone
+~~~
+
+![image-20220511101736648](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205111017746.png)
+
+##### 查看所有支持的区域
+
+~~~shell 
+firewall-cmd --get-zones
+~~~
+
+![image-20220511101915635](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205111019721.png)
+
+##### 列出当前使用区域配置
+
+~~~shell
+firewall-cmd --list-all
+~~~
+
+![image-20220511102143726](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205111021807.png)
+
+##### 列出所有区域的配置
+
+~~~shell 
+firewall-cmd --list-all-zones
+~~~
+
+![image-20220511103647676](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205111036773.png)
+
+##### 添加允许通过的服务或端口
+
+语法：firewall-cmd --zone=public --add-prot/service=端口/服务名
+
+~~~shell 
+# 在public区域，添加允许tcp协议的1024端口通过的规则
+firewall-cmd --zone=public --add-port=1024/tcp
+
+# 在public区域，添加允许ftp服务的规则
+# 服务必须在/usr/lib/firewalld/services
+firewall-cmd --zone=public --add-service=ftp
+~~~
+
+![image-20220511104412503](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205111044606.png)
+
+> 添加规则后需要时候使用firewall-cmd --reload重新加载下防火墙
+
+##### 去除允许通过的服务或端口
+
+~~~shell
+# 在public区域，移除允许tcp协议的1024端口通过的规则
+firewall-cmd --zone=public --remove-port=1024/tcp
+
+# 在public区域，移除允许ftp服务的规则
+# 服务必须在/usr/lib/firewalld/services
+firewall-cmd --zone=public --remove-service=ftp
+~~~
+
+![image-20220511105246123](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205111052222.png)
+
+##### 永久模式参数permanent
+
+~~~shell
+# 根据服务名称添加规则
+firewall-cmd --zone=public --add-service=ftp --permanent
+# 根据端口号添加规则
+firewall-cmd --zone=public --add-port=80/tcp --permanent
+
+firewall-cmd --reload
+~~~
+
+### 计划任务
+
+语法：crontab 选项
+
+| 选项 | 说明                                   |
+| ---- | -------------------------------------- |
+| -l   | 列出指定用户的计划任务列表             |
+| -e   | 编辑指定用户的计划任务列表             |
+| -u   | 指定用户名，如果不指定，则表示当前用户 |
+| -r   | 删除指定用户的计划任务列表             |
+
+![image-20220511220111440](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205112201556.png)
+
+> 四个符号：
+>
+> *：表示取值范围中的每个数字
+>
+> -：连续区间表达式，要表示1到5   1-5
+>
+> /：表示每多少个，例如：每10分钟一次，可以写成*/10
+>
+> ，：表示多个取值，比如在1点、2点和5点执行，则可以写成1,2,5
+
+~~~shell
+# 每月1/10/22日的4:45分重启network
+45 4 1,10,22 * * /usr/bin/systemctl restart network
+
+# 每周六、周日的1:10重启network
+10 1 * * 6,7  /usr/bin/systemctl restart network
+
+# 每天18:00至23:00之间每隔30分钟重启network服务
+*/30 18-23 * * *  /usr/bin/systemctl restart network
+
+# 每隔2天的8点到11点的第3和第15分钟执行一次重启
+3,15 8-11 */2 * *  /usr/sbin/reboot
+~~~
+
+#### crontab的权限问题
+
+corntab是任何用户都可以创建的计划任务，但是root用户可以通过配置来设置某些用户不允许设置计划任务
+
+黑名单：`/etc/cron.deny`
+
+白名单：`/etc/cron.allow`
+
+> 白名单不存在，需要自己创建
+
+>白名单的优先级高于黑名单，如果一个用户同时存在两个名单文件中，则会被默认允许创建计划任务
+
+#### 计划任务文件路径
+
+计划任务文件保存在`/var/spool/cron/用户名文件`
+
+#### 查看计划任务日志信息
+
+查看定时任务运行情况文件`/var/log/cron`
+
+#### 一次性计划任务（at命令）
+
+at：一次性定时执行任务
+
+##### 安装at命令
+
+CentOS 7版本自带at，其他的版本需要手动安装
+
+~~~shell
+yum install -y at
+~~~
+
+##### 启动底层服务
+
+~~~shell
+systemctl start atd
+systemctl enable atd
+~~~
 
 
 
+~~~shell
+# 三天后下午5点执行/bin/ls
+at 5pm+3 days
+/bin/ls
+at>ctrl+D(退出)
+~~~
 
+![image-20220513103550799](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131035903.png)
 
+~~~shell
+# 查看at的计划任务
+atq
+~~~
 
+![image-20220513103654646](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131036721.png)
 
+~~~shell 
+# 删除at的计划任务
+atrm 任务号
+~~~
+
+![image-20220513103938126](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205131039206.png)
 
 ## Linux进程检测与进程管理
 
