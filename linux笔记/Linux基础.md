@@ -328,6 +328,20 @@ mv /root/readme.txt /home/readme.txt
 mv readme.txt rea.txt
 ~~~
 
+##### dd创建文件
+
+主要功能：在Linux操作系统中，生成某个大小的测试文件
+
+~~~shell 
+dd if=/dev/zero of=文件名称 bs=1M count=1
+选项说明：
+if：代表输入文件
+of：代表输出文件
+bs：代表以字节为单位的块大小
+count：代表被复制的块
+其中/dev/zero是一个字符设备，会不断返回0值字节
+~~~
+
 ### 打包压缩与解压缩
 
 #### tar压缩与解压缩
@@ -525,9 +539,32 @@ find -name "*.log" -mtime +3 -type f
 
 #### -exec选项
 
+~~~shell
+# 删除10天以前的日志信息
+find /var/log/ -name "*.log" -type f -mtime +10 | xargs rm -rf
+find /var/log/ -name "*.log" -type f -mtime +10 -exec rm -rf {} \;
+~~~
 
+#### 根据文件size大小搜索文件
 
+基本语法：find 路径 -size [文件大小，常用单位：K，M，G]
 
+> size值：搜索等于size值大小的文件
+>
+> -size值：[0,size值]
+>
+> +size值：(size值，正无穷大)
+
+~~~shell
+# 搜索/var/log/目录下大小为5M的文件信息
+find /var/log/ -size 5M -type f
+
+# 搜索/var/log/目录下大小为5M以内（0<=size<=5M）的文件信息
+find /var/log/ -size -5M -type f
+
+# 搜索/var/log/目录下大于100M（size>100M）的文件信息
+find /var/log/ -size +100M -type f
+~~~
 
 
 
