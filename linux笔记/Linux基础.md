@@ -1,4 +1,5 @@
 # Linux基础
+
 [TOC]
 ## 系统文件架构
 
@@ -566,8 +567,6 @@ find /var/log/ -size -5M -type f
 find /var/log/ -size +100M -type f
 ~~~
 
-
-
 ### stat命令
 
 作用：获取文件的系统时间
@@ -579,10 +578,6 @@ stat aicp_asr_ft.toml
 ```
 
 ![image-20220516101330300](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205161013415.png)
-
-
-
-
 
 ### grep命令
 
@@ -703,6 +698,29 @@ groupmod -g 1101 -n bjhr hr
 groupdel test
 ~~~
 
+#### 附属组管理
+
+基本语法：gpasswd [选项  选项的值] 用户名称 用户组的名称
+
+| 选项 | 说明                                                   |
+| ---- | ------------------------------------------------------ |
+| -a   | 添加用户到组，一次只能添加一个用户                     |
+| -d   | 从组中删除成员                                         |
+| -A   | 指定管理员                                             |
+| -M   | 指定组成员，可以批量添加用户到组。会覆盖原有组中的用户 |
+
+~~~shell
+# 添加用户到sysadmin组
+gpasswd -a user01 sysadmin
+# 设置sysadmin组成员为user02 user03
+gpasswd -M user02,user03 sysadmin
+~~~
+
+~~~shell
+# 将user03用户从组sysadmin里移除
+gpasswd -d user03 sysadmin
+~~~
+
 #### 用户管理
 
 ##### useradd添加用户
@@ -724,6 +742,7 @@ groupdel test
 | -s   | 指定用户登入后所使用的shell解释器，默认`/bin/bash`如果不想让其登录，则可以设置为`/sbin/nologin` |
 | -d   | 指定用户登录时开始的目录（家目录的位置）                     |
 | -n   | 取消建立以用户名称为名的群组                                 |
+| -r   | 指定用户为系统用户                                           |
 
 ~~~shell
 # 创建一个linuxuser的账号
@@ -806,9 +825,61 @@ usermod -s /sbin/login linuxuser
 
 基本语法：userdel [选项] 用户名称
 
-| 选项 | 说明                             |
-| ---- | -------------------------------- |
-| -r   | 删除用户的同时，删除用户的家目录 |
+| 选项 | 说明                                 |
+| ---- | ------------------------------------ |
+| -r   | 删除用户的同时，删除用户的家目录     |
+| -f   | 强制删除用户（即时用户处于登录状态） |
+
+##### chage修改账户信息
+
+chage [选项] 用户名
+
+| 选项 | 说明                                                         |
+| ---- | ------------------------------------------------------------ |
+| -l   | 列出用户的详细密码状态                                       |
+| -d   | 日期，修改`/etc/shadow`文件中指定用户密码信息的第3个字段，也就是最后一次修改密码的日期。格式为YYYY-MM-DD |
+| -m   | 天数，修改密码最短保留的天数，也就是`/etc/shadow`文件中的第4个字段 |
+| -M   | 天数，修改密码的有效期，也就是`/etc/shadow`文件中的第5个字段。（每隔多少天更新一次密码） |
+| -W   | 天数，修改密码到期前的警告天数，也就是`/etc/shadow`文件中的第6个字段 |
+| -i   | 天数，修改密码过期后的宽限天数，也就是`/etc/shadow`文件中的第7个字段。（过期后还可以使用的天数，达到这个天数后，账号失效） |
+| -E   | 日期，修改账号失效日期，格式为YYYY-MM-DD，也就是`/etc/shadow`文件中的第8个字段。 |
+
+~~~shell
+# 查看用户账号的相关信息
+chage -l lisi
+~~~
+
+![image-20220516135928604](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205161359715.png)
+
+~~~shell 
+# 新建一个账号，设置初始密码为123456，要求用户第一次登录后必须强制修改用户的密码
+useradd lamp -d /home/hcicloud -m && echo "123456" | passwd  --stdin lamp
+chage -d 0 lamp
+~~~
+
+![image-20220516140420144](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205161404239.png)
+
+~~~shell 
+# 设置lamp账号的过期时间为2010-04-10
+chage -E "2010-04-10" lamp 
+~~~
+
+![image-20220516140708623](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205161407740.png)
+
+~~~shell
+# 设置lamp账号10天后过期
+chage -E $(date +%F -d '10days') lamp
+~~~
+
+![image-20220516141125767](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205161411844.png)
+
+
+~~~shell 
+# 设置lamp用户60天后密码过期，至少7天后才能修改密码，密码过期7天前收到告警信息
+chage -M 60 -m 7 -M 7 lamp
+~~~
+
+![image-20220516141145849](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205161411926.png)
 
 ## 管道
 
