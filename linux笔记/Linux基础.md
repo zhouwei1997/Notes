@@ -261,6 +261,23 @@ touch {1..5}.txt
 
 ![image-20220422165056357](https://raw.githubusercontent.com/zhouwei1997/Image/master/202204221650455.png)
 
+###### 创建文件时修改创建时间
+
+~~~shell
+# 同时修改文件的修改时间和访问时间
+touch -d "2020-03-31 08:10:30" install.log
+~~~
+
+~~~shell 
+# 只修改文件的修改时间
+touch -m -d "2020-03-31 08:10:30" install.log
+~~~
+
+~~~shell 
+# 只修改文件的访问时间
+touch -a -d "2020-03-31 08:10:30" install.log
+~~~
+
 ##### 删除
 
 命令：rm
@@ -488,6 +505,47 @@ find /* -name *.log -type f
 ~~~
 
 ![image-20220506104049133](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205061040228.png)
+
+#### 根据文件修改时间搜索文件
+
+基本语法：find 路径 -mtime +days或-days
+
+> -mtime：根据文件的最后修改时间搜索文件
+>
+> +：加号，代表搜索几天之前的文件信息
+>
+> -：减号，代表搜索几天以内的文件信息
+
+~~~shell
+# -mtime根据文件最后修改时间搜索文件（搜索3天前的文件信息）
+find -name "*.log" -mtime +3 -type f
+~~~
+
+![image-20220516102426897](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205161024985.png)
+
+#### -exec选项
+
+
+
+
+
+
+
+### stat命令
+
+作用：获取文件的系统时间
+
+语法：stat [选项] 文件名
+
+```shell
+stat aicp_asr_ft.toml
+```
+
+![image-20220516101330300](https://raw.githubusercontent.com/zhouwei1997/Image/master/202205161013415.png)
+
+
+
+
 
 ### grep命令
 
