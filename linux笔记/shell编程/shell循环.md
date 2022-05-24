@@ -155,13 +155,31 @@ done
 
 ~~~
 
-
-
-## unit循环
+## until循环
 
 ### 语法结构
 
 ~~~shell
-unt
+until expression [ 1 -eq 1 ]
+  do
+    command
+  done
 ~~~
 
+### 应用场景
+
+使用until语句批量创建10个用户，要求stu1-stu5用户的UID分别是1001-1005；stu6-stu10用户的家目录分别在/rhome/stu6-stu10
+
+~~~shell
+#!/bin/bash
+i=1
+until [ $i -gt 10 ]; do
+    if [ $i -le 5 ]; then
+        useradd -u 100$i stu$i && echo 123 | passwd --stdin stu$i
+    else
+        [ ! -d /rhome ] && mkdir /rhome
+        useradd -d /rhome/stu$i && cho 123 | passwd --stdin stu$i
+    fi
+    let i++
+done
+~~~
