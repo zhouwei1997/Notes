@@ -100,3 +100,68 @@ echo hello hahahaha
 
 
 ## while循环
+
+> 特点：条件为真就进入死循环，条件为假就退出循环
+
+### 语法结构
+
+~~~shell
+while 表达式
+	do
+		command
+	done
+	
+while expression [ 1 -eq 1 ]
+	do
+		command
+	d
+~~~
+
+~~~shell
+# 计算1-50的偶数和
+
+#!/bin/bash
+sum=0
+i=2
+# 循环打印1-50的偶数和，计算后重新赋值给sum
+while [ $i -le 50 ]
+do
+	let sum=sum+i
+	let i+=2
+done
+echo "1-50的偶数和为：$sum"
+~~~
+
+### 应用场景
+
+写一个30秒同步一次时间，向同步时间服务器10.1.1.250的脚本，如果同步失败，则进行邮件告警，每次失败都告警。同步成功，夜景下邮件通知。但是成功100次才通知一次
+
+~~~shell
+#!/bin/bash
+count=0
+ntp_server=10.1.1.250
+while true; do
+    rdate -s $ntp_server &>/dev/null
+    if [ $? -ne 0 ]; then
+        echo "system date failed" | mail -s 'check system date' root@localhost
+    else
+        let count++
+        if [ $(($count % 100)) -eq 0 ]; then
+            echo "system date successful" | mail -s 'check system date' root@localhost && count=0
+        fi
+    fi
+    sleep 30
+done
+
+~~~
+
+
+
+## unit循环
+
+### 语法结构
+
+~~~shell
+unt
+~~~
+
