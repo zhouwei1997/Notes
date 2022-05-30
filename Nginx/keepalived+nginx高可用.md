@@ -297,18 +297,6 @@ fi
 chmod a+x /etc/keepalived/check_nginx.sh
 ~~~
 
-
-
-
-
-
-
-
-
-
-
-
-
 ## 问题排查
 
 ### 两台都出现VIP的情况
