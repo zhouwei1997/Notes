@@ -58,3 +58,94 @@ print(type(marry))
 ~~~
 
 ![image-20220607101510831](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206071015917.png)
+
+<table>
+    <tr>
+        <td>分类</td>
+        <td>类型</td>
+        <td>备注</td>
+    </tr>
+    <tr>
+        <td rowspan="4">数字</td>
+        <td>int</td>
+        <td>整形</td>
+    </tr>
+    <tr>
+    	<td>float</td>
+        <td>浮点型</td>
+    </tr>
+     <tr>
+    	<td>bool</td>
+        <td>布尔型[True/False]</td>
+    </tr>
+     <tr>
+    	<td>complex</td>
+        <td>复数（不常用）</td>
+    </tr>
+    <tr>
+    	<td>字符串</td>
+        <td>str</td>
+        <td>单引号，双引号和三引号内表示内容为字符串</td>
+    </tr>
+     <tr>
+    	<td>列表</td>
+        <td>list</td>
+        <td>使用中括号表示[1,2,3]</td>
+    </tr>
+      <tr>
+    	<td>元组</td>
+        <td>tuple</td>
+        <td>使用小括号表示(1,2,3)</td>
+    </tr>
+      <tr>
+    	<td>字典</td>
+        <td>dict</td>
+        <td>使用大括号表示，可以存放key-value键值对{"a":1,"b":2}</td>
+    </tr>
+      <tr>
+    	<td>集合</td>
+        <td>set</td>
+        <td>使用大括号表示，{"a","b"}</td>
+    </tr>
+</table>
+
+### 类型转换
+
+| 转换函数   | 说明                             |
+| ---------- | -------------------------------- |
+| int(xxx)   | 将xxx转换为整数                  |
+| float(xxx) | 将xxx转换为浮点型                |
+| str(xxx)   | 将xxx转换为字符串                |
+| list(xxx)  | 将xxx转换为列表                  |
+| tuple(xxx) | 将xxx转换为元组                  |
+| dict(xxx)  | 将xxx转换为字典                  |
+| set(xxx)   | 将xxx转换为集合                  |
+| chr(xxx)   | 把整数[0-255]转换为对应的ASCII码 |
+| ord(xxx)   | 把ASCII码转换成对应的整数[0-255] |
+
+~~~python 
+age = 25
+print(type(age))
+age = str(age)
+print(type(age))
+~~~
+
+![image-20220607112323366](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206071123423.png)
+
+## 输入输出
+
+### 输入
+
+python3中可以是用input()函数等待用户输入
+
+~~~python
+~~~
+
+
+
+### 输出
+
+#### 普通输出
+
+#### 格式化输出
+
