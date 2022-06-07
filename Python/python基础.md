@@ -139,13 +139,34 @@ print(type(age))
 python3中可以是用input()函数等待用户输入
 
 ~~~python
+name = input("请输入您的名字：")
+age = int(input("请输入您的年龄："))
+print(name + ",您5年后为" + str(age + 5) + "岁了")
 ~~~
 
+![image-20220607145015713](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206071450780.png)
 
+>用单引号、双引号、三引号、str()函数转换的和input()输入的都为字符串类型
 
 ### 输出
 
-#### 普通输出
-
 #### 格式化输出
 
+| 操作符 | 说明   |
+| ------ | ------ |
+| %s     | 字符串 |
+| %d     | 整数   |
+| %f     | 浮点数 |
+| %%     | 输出%  |
+
+~~~python
+name = input("请输入您的名字：")
+age = int(input("请输入您的年龄："))
+print(name + ",您5年后为" + str(age + 5) + "岁了")
+# %s或%d相当于是一个占位符，按顺序一一对应后面()里面的变量（需要类型对应）
+print("%s,您5年后%d岁了" % (name, age + 5))
+# {}相当于是一个占位符，按顺序一一对应后面format()里面的变量
+print("{},您5年后{}岁了".format(name, age + 5))
+~~~
+
+![image-20220607171649774](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206071716873.png)
