@@ -191,11 +191,11 @@ if 条件:
 if 条件:
     条件成立执行的代码1
     条件成立执行的代码2
-    ......
-else:
+    ……
+    else:
     条件不成立执行的代码1
     条件不成立执行的代码2
-    ......
+    ……
 ~~~
 
 ~~~python
@@ -213,14 +213,14 @@ print("系统关闭")
 if 条件1:
     条件1成立执行的代码1
     条件1成立执行的代码2
-    ......
-elif 条件2:
+    ……
+    elif 条件2:
     条件2成立执行的代码1
     条件2成立执行的代码2
-    ......
-......
-else:
-条件不成立执行的代码1
+    ……
+    ……
+    else:
+    条件不成立执行的代码1
 ~~~
 
 > 多重判断也可以和else配合使用，一般else放到整个if语句的最后，表示以上条件都不成立的时候执行的代码
@@ -240,3 +240,152 @@ print(c)
 
 ## 循环
 
+### for循环
+
+~~~python
+for 临时变量 in 序列:
+    重复执行代码1
+    重复执行代码2
+    ……
+~~~
+
+~~~python
+str1 = 'itheima'
+for i in str1:
+    print(i)
+~~~
+
+#### for循环嵌套
+
+### while循环
+
+~~~python
+while 条件:
+    条件成立重复执行的代码1
+    条件成立重复执行的代码2
+    ……
+~~~
+
+~~~python
+# 计算1-100的累加和
+i = 1
+sum = 0
+while i <= 100:
+    sum += i
+    i += 1
+print(sum)
+~~~
+
+![image-20220621103751726](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206211037854.png)
+
+~~~python
+# 1-100的偶数和
+i = 1
+sum = 0
+while i <= 100:
+    if i % 2 == 0:
+        sum += i
+    i += 1
+print(sum)
+~~~
+
+![image-20220621104427486](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206211044567.png)
+
+#### while循环嵌套
+
+~~~python
+while 条件1:
+    条件1成立执行的代码
+    ……
+    while 条件2:
+        条件2成立执行的代码
+        ……
+~~~
+
+~~~python
+j = 1
+while j <= 9:
+    # 重复打印9行表达式
+    i = 1
+    while i <= j:
+        print(f'{i} * {j} = {i * j}', end='\t')
+        i += 1
+    # 一行的表达式结束
+    print()
+    j += 1
+~~~
+
+![image-20220621144733835](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206211447945.png)
+
+### break和continue
+
+break和continue是循环中满足一定条件退出循环的两种方式
+
+break控制循环流程即终止此循环
+
+continue控制循环流程即退出当前一次循环继而执行下一场循环
+
+#### break
+
+当某些条件成立时，退出整个循环
+
+~~~python
+# 循环吃5个苹果，吃完第3个吃饱了，第4和第5不吃了 --- 循环不执行了
+i = 1
+while i <= 5:
+    if i == 4:
+        print(f'吃了{i}个苹果，吃饱了，不吃了')
+        break
+    print(f'吃了第{i}个苹果')
+    i += 1
+print("不吃了")
+~~~
+
+![image-20220621105542567](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206211055664.png)
+
+#### continue
+
+当某些条件成立，退出当前循环，执行下一次循环
+
+~~~python
+# 吃到第3个吃出了一个虫子，第三个不吃了，没吃饱，继续吃第四个和第五个苹果
+# 只有第三个苹果不吃
+
+i = 1
+while i <= 5:
+    if i == 3:
+        print("吃出一个大虫子，这个苹果不吃了")
+        # 如果使用continue，在continue之前一定要修改计数器，否则进入死循环
+        i += 1
+        continue
+    print("吃了第{}个苹果".format(i))
+    i += 1
+~~~
+
+> 如果使用continue，在continue之前一定要修改计数器，否则进入死循环
+
+![image-20220621111122760](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206211111853.png)
+
+### 循环中的else
+
+else下方缩进的代码指的是当循环正常结束之后要执行的代码
+
+#### while...else
+
+~~~python 
+while 条件:
+    条件成立执行的代码
+else:
+    循环正常结束之后要执行的代码
+~~~
+
+#### for...else 
+
+~~~python
+for 临时变量 in 序列:
+    重复执行代码
+else:
+    循环正常结束之后要执行的代码
+~~~
+
+## 
