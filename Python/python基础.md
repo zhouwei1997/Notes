@@ -379,7 +379,7 @@ else:
     循环正常结束之后要执行的代码
 ~~~
 
-#### for...else 
+#### for...else
 
 ~~~python
 for 临时变量 in 序列:
@@ -388,4 +388,483 @@ else:
     循环正常结束之后要执行的代码
 ~~~
 
-## 
+## 字符串
+
+### 切片
+
+~~~python
+序列[开始位置下标:结束位置下标:步长]
+~~~
+
+> 1、不包含结束位置下标对应的数据，正负整数均可
+>
+> 2、步长是选取间隔，正负整数均可，默认步长为1
+
+~~~python
+name = "abcdefghijklmn"
+
+print(name[2:5:1])  # cde
+print(name[2:5])  # cde
+print(name[:5])  # abcde
+print(name[2:])  # cdefghijklmn
+print(name[:])  # abcdefghijklmn
+
+# 负数测试
+print(name[::-1])  # nmlkjihgfedcba
+# 下标-1表示最后一个数据，依次向前类推
+print(name[-4:-1])  # klm
+print(name[-4:-1:-1])
+~~~
+
+> 1、不写开始，默认从0开始选取
+>
+> 2、不写结束，表示选取到最后
+>
+> 3、如果不写开始和结束，表示选取所有
+>
+> 4、如果步长是负数，表示倒序选取
+>
+> 5、下标-1表示最后一个数据，依次向前类推
+
+![image-20220621161610525](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206211616626.png)
+
+### 常用操作方法
+
+#### 查找
+
+字符串的查找方法即是查找子串在字符串中的位置或出现的次数
+
+- find()：检测某个子串是否包含在这个字符串中，如果在返回这个子串开始位置的下标，否则返回-1
+
+    ~~~
+    字符串序列.find(子串，开始位置下标，结束位置下标)
+    ~~~
+
+  > 开始和结束位置下标可以省略，表示在整个字符串序列中查找
+
+    ~~~python
+    mystr = "hello world and itcast and itheima and python"
+    
+    print(mystr.find('and')) # 12
+    print(mystr.find('and', 15, 30)) # 23
+    print(mystr.find('ands')) # -1
+    ~~~
+
+  ![image-20220621162521990](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206211625086.png)
+
+- index()：检测某个子串中是否包含在这个字符串中，如果在返回这个子串开始的位置下标，否则报异常
+
+    ~~~
+    字符串序列.index(子串，开始位置下标，结束位置下标)
+    ~~~
+
+  > 开始和结束位置下标可以省略，表示在整个字符串序列中查找
+
+  ~~~python
+  mystr = "hello world and itcast and itheima and python"
+  
+  print(mystr.index('and'))  # 12
+  print(mystr.index('and', 15, 30))  # 23
+  print(mystr.index('ands'))  # 报错
+  ~~~
+
+  ![image-20220621211320967](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212113092.png)
+
+- rfind()：和find()功能相同，但查找方向从右侧开始
+
+- rindex()：和index()功能相同，但查找方向从右侧开始
+
+- count()：返回某个子串在字符串中出现的次数
+
+    ~~~
+    字符串序列.count(子串，开始位置下标，结束位置下标)
+    ~~~
+
+  > 开始和结束位置下标可以省略，表示在整个字符串序列中查找
+
+    ~~~python
+    mystr = "hello world and itcast and itheima and python"
+    
+    print(mystr.count('and'))  # 3
+    print(mystr.count('and', 15, 30))  # 1
+    print(mystr.count('ands'))  # 0
+    ~~~
+
+​    ![image-20220621211743635](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212117710.png)
+
+#### 修改
+
+- replace()：替换
+
+  调用replace()函数后，原有字符串的数据并没有做到修改，修改后的数据是replace()函数的返回值。
+
+    ~~~
+    字符串序列.replace(旧子串，新子串，替换次数)
+    ~~~
+
+  > 替换次数如果超出子串出现次数，则表示替换所有的子串
+
+    ~~~python
+    mystr = "hello world and itcast and itheima and python"
+    
+    # 结果：hello world he itcast he itheima he python
+    print(mystr.replace('and', 'he'))
+    # 结果：hello world he itcast he itheima he python
+    print(mystr.replace('and', 'he', 10))
+    # 结果：hello world and itcast and itheima and python
+    print(mystr)
+    ~~~
+
+  ![image-20220621212143736](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212121805.png)
+
+- split()：按照指定字符分割字符串
+
+    ~~~
+    字符串序列.split(分割字符，num)
+    ~~~
+
+  > num表示的是分割字符出现的次数，即将来返回数据个数为num+1个
+
+    ~~~python
+    mystr = "hello world and itcast and itheima and python"
+    
+    # 结果：['hello world ', ' itcast ', ' itheima ', ' python']
+    print(mystr.split('and'))
+    # 结果：['hello world ', ' itcast ', ' itheima and python']
+    print(mystr.split('and', 2))
+    # 结果：['hello', 'world', 'and', 'itcast', 'and', 'itheima', 'and', 'python']
+    print(mystr.split(' '))
+    # 结果：['hello', 'world', 'and itcast and itheima and python']
+    print(mystr.split(' ', 2))
+    ~~~
+
+  ![image-20220621212535720](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212125793.png)
+
+- join()：用一个字符或子串合并字符串，即将多个字符串合并为一个新的字符串
+
+    ~~~
+    字符或子串.join(多字符串组成的序列)
+    ~~~
+
+    ~~~python
+    list1 = ['chuan', 'zhi', 'bo', 'ke']
+    t1 = ['aa', 'bb', 'cc', 'ddd']
+    # 结果：chuan_zhi_bo_ke
+    print('_'.join(list1))
+    ~~~
+
+- capitalize()：将字符串第一个字符转换成大写
+
+    ~~~python
+    mystr = "hello world and itcast and itheima and python"
+    
+    # 结果为：Hello world and itcast and itheima and python
+    print(mystr.capitalize())
+    ~~~
+
+  ![image-20220621213722315](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212137379.png)
+
+- title()：将字符串每个单词首字母转换成大写
+
+    ~~~Python
+    mystr = "hello world and itcast and itheima and python"
+    
+    # 结果为：Hello World And Itcast And Itheima And Python
+    print(mystr.title())
+    ~~~
+
+- lower()：将字符串中大写转换成小写
+
+    ~~~python
+    mystr = "hello world and itcast and itheima and PYTHON"
+    
+    # 结果为：hello world and itcast and itheima and python
+    print(mystr.lower())
+    ~~~
+
+  ![image-20220621213901410](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212139475.png)
+
+- upper()：将字符串中小写转换成大写
+
+    ~~~python
+    mystr = "hello world and itcast and itheima and PYTHON"
+    
+    # 结果为：HELLO WORLD AND ITCAST AND ITHEIMA AND PYTHON
+    print(mystr.upper())
+    ~~~
+
+  ![image-20220621214050940](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212140002.png)
+
+- lstrip()：删除字符串左侧空白字符
+
+    ~~~python
+    mystr = "     hello world and itcast and itheima and PYTHON"
+    
+    # 结果为：hello world and itcast and itheima and PYTHON
+    print(mystr.lstrip())
+    ~~~
+
+- rstrip()：删除字符串右侧空白字符
+
+    ~~~python
+    mystr = "     hello world and itcast and itheima and PYTHON     "
+    
+    # 结果为：     hello world and itcast and itheima and PYTHON
+    print(mystr.rstrip())
+    ~~~
+
+- strip()：删除字符串两侧空白字符
+
+    ~~~Python
+    mystr = "     hello world and itcast and itheima and PYTHON     "
+    
+    # 结果为：hello world and itcast and itheima and PYTHON
+    print(mystr.strip())
+    ~~~
+
+- ljust()：返回一个原字符串左对齐，并使用指定字符（默认空格）填充至对应长度的新字符串
+
+    ~~~
+    字符串序列.ljust(长度,填充字符)
+    ~~~
+
+  ![image-20220621214628757](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212146822.png)
+
+- rjust()：返回一个原字符串右对齐，并使用指定字符（默认空格）填充至对应长度的新字符串
+
+- center()：返回一个原字符串居中对齐，并使用指定字符（默认空格）填充至对应长度的新字符串
+
+- startswitch()：检查字符串是否以指定子串开头，是则返回True，否则返回False。如果设置开始和结束位置下标，则在指定范围内检查
+
+    ~~~
+    字符串序列.startswitch(子串,开始位置下标,结束位置下标)
+    ~~~
+
+    ~~~python
+    mystr = "hello world and itcast and itheima and Python"
+    
+    print(mystr.startswith('hello')) # True
+    print(mystr.startswith('hello', 5, 10)) # False
+    ~~~
+
+  ![image-20220621215156532](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212151616.png)
+
+- endswitch()：检查字符串是否以指定子串结尾，是则返回True，否则返回False。如果设置开始和结束位置下标，则在指定范围内检查
+
+     ~~~
+     字符串序列.endswitch(子串,开始位置下标,结束位置下标)
+     ~~~
+
+    ```python
+    mystr = "hello world and itcast and itheima and Python"
+    
+    print(mystr.endswith('Python'))  # True
+    print(mystr.endswith('Python', 5, 10))  # False
+    ```
+
+​        ![image-20220621215414011](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212154099.png)
+
+- isalpha()：如果字符串至少有一个字符并且所有字符都是字母则返回True，否则返回False
+
+    ~~~python
+    mystr1 = "hello"
+    mystr2 = "hello123456"
+    
+    print(mystr1.isalpha())  # True
+    print(mystr2.isalpha())  # False
+    ~~~
+
+- isdigit()：如果字符串只包含数字则返回True，否则返回False
+
+- isalnum()：如果字符串至少有一个字符并且所有字符都是字母或数字则返回True，否则返回False
+
+- isspace()：如果字符串中只包含空白则返回True，否则返回False
+
+## 列表
+
+### 格式
+
+~~~
+[数据1,数据2,数据3,……]
+~~~
+
+列表可以一次性存储多个数据，且可以为不同的数据类型
+
+### 常用操作
+
+- index()：返回指定数据所在位置的下标
+
+    - 如果查找的数据不存在则报错
+
+- count()：统计指定数据在当前列表中出现的次数
+
+- len()：访问列表长度，即列表中数据的个数
+
+- in：判断指定数据在某个列表序列，如果存在则返回True，否则返回False
+
+    ~~~python
+    name_list = ['Tom', "Lily", "Rose"]
+    
+    print('Lily' in name_list)  # True
+    print('Lilys' in name_list)  # False
+    ~~~
+
+  ![image-20220621220951869](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212209250.png)
+
+- not in：判断指定数据不在某个列表序列，如果不存在则返回True，否则返回False
+
+    ~~~python
+    name_list = ['Tom', "Lily", "Rose"]
+    
+    print('Lily' not in name_list)  # False
+    print('Lilys' not in name_list)  # True
+    ~~~
+
+  ![image-20220621221044697](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212210005.png)
+
+- append()：列表结尾追加数据
+
+    ~~~
+    列表序列.append(数据)
+    ~~~
+
+    ~~~python
+    name_list = ['Tom', "Lily", "Rose"]
+    name_list.append('xiaoming')
+    # 返回结果：['Tom', 'Lily', 'Rose', 'xiaoming']
+    print(name_list)
+    ~~~
+
+  ![image-20220621221519489](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212215745.png)
+
+- extend()：列表结尾追加数据，如果数据是一个序列，则将这个序列的数据逐一添加到列表
+
+    ~~~
+    列表序列.extend(数据)
+    ~~~
+
+    ~~~python 
+    # 单个数据
+    name_list = ['Tom', "Lily", "Rose"]
+    name_list.extend('xiaoming')
+    # 返回结果：['Tom', 'Lily', 'Rose', 'x', 'i', 'a', 'o', 'm', 'i', 'n', 'g']
+    print(name_list
+    ~~~
+
+  ![image-20220621221800484](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212218761.png)
+
+    ~~~python 
+    # 序列数据
+    name_list = ['Tom', "Lily", "Rose"]
+    name_list.extend(['xiaoming', 'xiaohong'])
+    # 返回结果：['Tom', 'Lily', 'Rose', 'xiaoming', 'xiaohong']
+    print(name_list)
+    ~~~
+
+  ![image-20220621222030323](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206212220582.png)
+
+- insert()：
+
+    ~~~
+    列表序列.insert(位置下标，数据)
+    ~~~
+
+    ~~~python
+    name_list = ['Tom', "Lily", "Rose"]
+    name_list.insert(1, 'xioaming')
+    # 返回结果：['Tom', 'xioaming', 'Lily', 'Rose']
+    print(name_list)
+    ~~~
+
+  ![image-20220623153435069](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206231534180.png)
+
+- del()：删除列表
+
+    ~~~
+    del 目标
+    ~~~
+
+    ~~~python
+    # 删除列表
+    name_list = ['Tom', "Lily", "Rose"]
+    del name_list
+    
+    print(name_list)
+    ~~~
+
+  ![image-20220623153720274](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206231537361.png)
+
+    ~~~python
+    name_list = ['Tom', "Lily", "Rose"]
+    del name_list[0]
+    
+    print(name_list)
+    ~~~
+
+  ![image-20220623153841175](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206231538268.png)
+
+- pop()：删除指定下标的数据（默认为最后一个），并返回该数据
+
+    - 无论是按照下标还是删除最后一个，pop函数都会返回这个被删除的数据
+
+    ~~~python 
+    name_list = ['Tom', "Lily", "Rose"]
+    del_name = name_list.pop()
+    print(del_name)
+    print(name_list)
+    ~~~
+
+    ![image-20220623154242400](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206231542477.png)
+
+- remove()
+
+    ~~~python
+    name_list = ['Tom', "Lily", "Rose"]
+    del_name = name_list.remove("Lily")
+    print(del_name)
+    print(name_list)
+    ~~~
+
+  ![image-20220623154450855](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206231544926.png)
+
+- clear()：清空列表
+
+  ~~~Python
+  name_list = ['Tom', "Lily", "Rose"]
+  name_list.clear()
+  
+  print(name_list)
+  ~~~
+
+  ![image-20220623154618091](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206231546173.png)
+
+- reverse()：逆序
+
+    ~~~python 
+    num_list = [1, 5, 6, 8, 9]
+    num_list.reverse()
+    print(num_list)
+    ~~~
+
+    ![image-20220623161626993](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206231616067.png)
+
+- sort()：排序
+
+    ~~~
+    列表序列.sort(key=None,reverse=False)
+    ~~~
+
+    > reverse表示排序规则，reverse=True：降序  everse=False：升序（默认）
+
+## 元组
+
+## 字典
+
+## 集合
+
+
+
+
+
+
+
