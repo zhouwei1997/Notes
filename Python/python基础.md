@@ -814,7 +814,7 @@ print(name[-4:-1:-1])
     print(name_list)
     ~~~
 
-    ![image-20220623154242400](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206231542477.png)
+  ![image-20220623154242400](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206231542477.png)
 
 - remove()
 
@@ -846,7 +846,7 @@ print(name[-4:-1:-1])
     print(num_list)
     ~~~
 
-    ![image-20220623161626993](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206231616067.png)
+  ![image-20220623161626993](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206231616067.png)
 
 - sort()：排序
 
@@ -854,17 +854,412 @@ print(name[-4:-1:-1])
     列表序列.sort(key=None,reverse=False)
     ~~~
 
-    > reverse表示排序规则，reverse=True：降序  everse=False：升序（默认）
+  > reverse表示排序规则，reverse=True：降序 everse=False：升序（默认）
 
 ## 元组
 
+一个元组可以存储多个数据，元组内的数据是不能修改的
+
+定义元组使用小括号，且用逗号隔开各个数据，数据可以是不同的数据类型
+
+~~~python
+# 多个数据元组
+t1 = (10, 20, 30)
+# 单个数据元组
+t2 = (10,)
+~~~
+
+> 如果定义的元组只有一个数据，那么整个数据后面最好添加逗号，否则数据类型为唯一数据的这个数据类型
+
 ## 字典
+
+字典里面的数据是以键值对形式出现，字典数据和数据顺序没有关系，即字典不支持下标，后期无论数据如何变化，只需要按照对应的键的名字查找数据即可。
+
+### 特点
+
+- 符号为大括号
+- 数据为键值对形式出现
+- 各个键值对之间用逗号隔开
+
+### 语法
+
+~~~Python
+# 有数据字典
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+# 空字典
+dict2 = {}
+dict3 = dict()
+~~~
+
+### 新增
+
+写法：字段序列[key]=值
+
+> 如果key存在则修改这个key对应的值
+>
+> 如果key不存在则新增此键值对
+
+~~~python
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+dict1['name'] = 'Rose'
+# {'name': 'Rose', 'age': 20, 'gender': '男'}
+print(dict1)
+
+dict1['id'] = 110
+# {'name': 'Rose', 'age': 20, 'gender': '男', 'id': 110}
+print(dict1)
+~~~
+
+![image-20220623173019218](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206231730317.png)
+
+### 修改
+
+写法：字段序列[key]=值
+
+> 如果key存在则修改这个key对应的值，如果key不存在则新增此键值对
+
+### 查找
+
+#### key值查找
+
+~~~python 
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+print(dict1['name']) # Tom
+print(dict1['id']) # 报错
+~~~
+
+![image-20220624163803797](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206241640397.png)
+
+> 如果当前查找的key存在，则返回对应的值；否则报错
+
+#### get()
+
+- 语法
+
+    ~~~python
+    字典序列.get(key,默认值)
+    ~~~
+
+    > 如果当前查找的key不存在则返回第二个参数（默认值），如果省略第二个参数，则返回None
+
+~~~python
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+print(dict1.get('name'))  # Tom
+# 110
+print(dict1.get('id', 110))
+# None
+print(dict1.get(' id'))
+~~~
+
+![image-20220624164459775](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206241644859.png)
+
+#### keys()
+
+查找字典中所有的key，返回可迭代对象
+
+~~~python 
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+# dict_keys(['name', 'age', 'gender'])
+print(dict1.keys())
+~~~
+
+![image-20220624164657320](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206241646408.png)
+
+#### values()
+
+查找字典中所有的value，返回可迭代对象
+
+~~~python
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+# dict_values(['Tom', 20, '男'])
+print(dict1.values())
+~~~
+
+![image-20220624164848576](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206241648662.png)
+
+#### items()
+
+查找字典中所有的键值对，返回可迭代对象，元组数据1是字典的key，元组数据2是字典的value
+
+~~~python 
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+# dict_items([('name', 'Tom'), ('age', 20), ('gender', '男')])
+print(dict1.items())
+~~~
+
+![image-20220624164942602](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206241649702.png)
+
+### 删除
+
+- del()/del：删除字典或删除字典中指定的键值对
+
+    ~~~python
+    dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+    del dict1['gender']
+    # {'name': 'Tom', 'age': 20}
+    print(dict1)
+    ~~~
+
+    ![image-20220624150143518](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206241501645.png)
+
+- clear()：清空字典
+
+    ~~~python
+    dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+    dict1.clear()
+    # {}
+    print(dict1)
+    ~~~
+
+    ![image-20220624150231516](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206241502623.png)
+
+### 循环遍历
+
+#### 循环遍历-key
+
+~~~python
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+for key in dict1.keys():
+    print(key)
+~~~
+
+![image-20220624165254516](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206241656539.png)
+
+#### 循环遍历-value
+
+~~~python
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+for value in dict1.values():
+    print(value)
+~~~
+
+![image-20220624165334714](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206241653806.png)
+
+#### 循环遍历-键值对
+
+~~~python
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+for item in dict1.items():
+    print(item)
+~~~
+
+![image-20220624165550673](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206241655758.png)
+
+#### 循环遍历-键值对（拆包）
+
+~~~python
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+for key, value in dict1.items():
+    print(f'{key}={value}')
+~~~
+
+![image-20220628103639133](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206281036232.png)
 
 ## 集合
 
+### 创建
+
+创建集合使用`{}`或者`set()`，但是如果要创建空集合，只能使用`set()`，因为`{}`用来创建空字典
+
+~~~python
+s3 = set('abcdefg')
+~~~
+
+### 新增
+
+#### add()
+
+~~~python
+s1 = {10, 20}
+s1.add(100)
+s1.add(10)
+# {100, 10, 20}
+print(s1)
+~~~
+
+​		![image-20220628104403772](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206281044843.png)
+
+> 集合具有去重功能，所以，当向集合内追加的数据是当前集合已有数据的话，则不进行任何操作
+
+	#### update()
+
+追加的数据是序列
+
+~~~Python
+s1 = {10, 20}
+s1.update([100, 200])
+s1.update('abc')
+# {100, 'c', 'a', 200, 10, 20, 'b'}
+print(s1)
+~~~
+
+![image-20220628104717280](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206281047365.png)
+
+### 删除
+
+#### remove()
+
+删除集合中指定数据，如果数据不存在则报错
+
+~~~python
+s1 = {10, 20}
+s1.remove(10)
+print(s1)
+~~~
+
+![image-20220628104906245](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206281049332.png)
+
+#### discard()
+
+删除集合中指定数据，如果数据不存在也不会报错
+
+~~~Python
+s1 = {10, 20}
+s1.discard(20)
+print(s1)
+~~~
+
+![image-20220628105011979](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206281050050.png)
+
+#### pop()
+
+随机删除集合中的某个数据，并返回这个数据
+
+~~~Python
+s1 = {10, 20, 30, 40, 50}
+del_num = s1.pop()
+print(del_num)
+~~~
+
+![image-20220628105100228](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206281051299.png)
+
+### 查找
+
+- in：判断数据在集合序列
+- not in：判断数据不在集合序列
+
+~~~python
+s1 = {10, 20, 30, 40, 50}
+print(10 in s1)
+print(10 not in s1)
+~~~
+
+![image-20220628105353950](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206281053025.png)
+
+## 公共函数
+
+| 函数                          | 描述                                                         |
+| ----------------------------- | ------------------------------------------------------------ |
+| len()                         | 计算容器中元素个数                                           |
+| del 或 del()                  | 删除                                                         |
+| max()                         | 返回容器中元素最大值                                         |
+| min()                         | 返回容器中元素最小值                                         |
+| range(start,end,step)         | 生成从start到end的数字，步长为step，供for循环使用。range()生成的序列不包含end数字 |
+| enumerate(可遍历对象,start=0) | 函数用于将一个可遍历的数据对象（列表、元组或字符串）组合为一个索引序列，同时列出数据和数据下标，一般用在for循环中.start参数用来设置遍历数据的下标的起始值，默认为0 |
+
+~~~Python
+list1 = ['a', 'b', 'c', 'd', 'e']
+for i in enumerate(list1):
+    print(i)
+
+for index, char in enumerate(list1, start=1):
+    print(f'下标是{index}，对应的字符是{char}')
+~~~
+
+![image-20220628111216987](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206281112085.png)
+
+## 推导式
+
+### 列表推导式
+
+作用：用一个表达式创建一个有规律的列表或控制一个有规律的列表
+
+列表推导式又叫列表生成式
+
+~~~Python
+# 需求：创建一个0-10的列表
+
+list1 = [i for i in range(10)]
+print(list1)
+~~~
+
+![image-20220628112153322](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206281121423.png)
+
+### 字典推导式
+
+~~~Python
+# 创建一个字典，字典key是1-5数字，value是这个数字的2次方
+dict1 = {i: i ** 2 for i in range(1, 5)}
+print(dict1)
+~~~
+
+![image-20220629141730998](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206291417111.png)
+
+~~~Python
+# 将两个列表合并成一个字典
+list1 = ['name', 'age', 'gender']
+list2 = ['Tom', 20, 'man']
+dict1 = {list1[i]: list2[i] for i in range(len(list1))}
+print(dict1)
+~~~
+
+![image-20220629142240591](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206291422681.png)
+
+> 1、如果两个列表的数据个数相同，len统计任何一个列表的长度都可以
+>
+> 2、如果两个列表的数据格式不相同，len统计数据多的列表数据个数会报错，len统计数量少的列表数据不会报错
+
+~~~Python
+# 提取字典中目标数据
+counts = {'MBP': 268, 'HP': 125, 'DELL': 201, 'Lenovo': 199, 'acer': 99}
+
+# 提取上述电脑数量大于等于200的字典数据
+count1 = {key: value for key, value in counts.items() if value > 200}
+print(count1)
+~~~
+
+![image-20220630094926773](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206300949016.png)
+
+### 集合推导式
+
+~~~python
+list1 = [1, 1, 2]
+set1 = {i ** 2 for i in list1}
+print(set1)
+~~~
+
+![image-20220630095501495](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206300955583.png)
+
+> 集合有数据去重功能
+
+## 函数
+
+### 定义函数
+
+~~~python
+def 函数名(参数):
+    代码1
+    代码2
+    ……
+~~~
+
+### 调用函数
+
+~~~python
+函数名(参数)
+~~~
+
+> 1、在不同的需求中，参数可有可无
+>
+> 2、在python中，函数必须先定义后调用
 
 
 
 
 
+
+
+## Lamdba
+
+## 文件操作
 
