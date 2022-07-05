@@ -1253,11 +1253,43 @@ def 函数名(参数):
 >
 > 2、在python中，函数必须先定义后调用
 
+### return作用
+
+1. 负责函数返回值
+2. 退出当前函数：导致return下方的所有代码（函数体内部）不执行
+
+## 拆包
+
+### 拆包
+
+#### 元组
+
+~~~python
+def return_num():
+    return 100, 200
 
 
+num1, num2 = return_num()
+print(num1)
+print(num2)
+~~~
 
+![image-20220704155120037](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207041551547.png)
 
+#### 字典
 
+~~~python
+dict1 = {'name': 'Tom', 'age': 18}
+a, b = dict1
+
+# 对字典进行拆包，取出来的是字典的key
+print(a)
+print(b)
+print(dict1[a])
+print(dict1[b])
+~~~
+
+![image-20220704155724784](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207041557893.png)
 
 ## Lamdba
 
