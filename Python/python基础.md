@@ -940,7 +940,7 @@ print(dict1['id']) # 报错
     字典序列.get(key,默认值)
     ~~~
 
-    > 如果当前查找的key不存在则返回第二个参数（默认值），如果省略第二个参数，则返回None
+  > 如果当前查找的key不存在则返回第二个参数（默认值），如果省略第二个参数，则返回None
 
 ~~~python
 dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
@@ -1000,7 +1000,7 @@ print(dict1.items())
     print(dict1)
     ~~~
 
-    ![image-20220624150143518](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206241501645.png)
+  ![image-20220624150143518](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206241501645.png)
 
 - clear()：清空字典
 
@@ -1011,7 +1011,7 @@ print(dict1.items())
     print(dict1)
     ~~~
 
-    ![image-20220624150231516](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206241502623.png)
+  ![image-20220624150231516](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206241502623.png)
 
 ### 循环遍历
 
@@ -1077,7 +1077,7 @@ s1.add(10)
 print(s1)
 ~~~
 
-​		![image-20220628104403772](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206281044843.png)
+​        ![image-20220628104403772](https://raw.githubusercontent.com/zhouwei1997/Image/master/202206281044843.png)
 
 > 集合具有去重功能，所以，当向集合内追加的数据是当前集合已有数据的话，则不进行任何操作
 
@@ -1291,7 +1291,383 @@ print(dict1[b])
 
 ![image-20220704155724784](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207041557893.png)
 
+## 递归
+
+### 特点
+
+- 函数内部自己调用自己
+- 必须有出口
+
 ## Lamdba
 
+如果一个函数有一个返回值，并且只有一句代码，可以使用lambda简化
+
+### 语法
+
+~~~
+lambda 列表参数:表达式
+~~~
+
+> - lambda表达式的参数可有可无，函数的参数在lambda表达式中完全适用
+> - lambda表达式能接收任何数据的参数但只能返回一个表达式的值
+
+~~~python
+# 函数
+def fn1():
+    return 200
+
+
+print(fn1)
+print(fn1())
+
+# lambda表达式
+fn2 = lambda: 100
+print(fn2)
+print(fn2())
+~~~
+
+![image-20220705160109288](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207051601543.png)
+
+### lambda参数形式
+
+#### 无参数
+
+~~~python 
+fn1 = lambda: 100
+print(fn1())
+~~~
+
+![image-20220705164343559](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207051643668.png)
+
+#### 一个参数
+
+~~~python 
+fn1 = lambda a: a
+print(fn1('hello world'))
+~~~
+
+![image-20220705164420848](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207051644916.png)
+
+#### 默认参数
+
+~~~python 
+fn1 = lambda a, b, c=100: a + b + c
+print(fn1(10, 20))
+~~~
+
+![image-20220705164503775](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207051645858.png)
+
+#### 可变参：*args
+
+~~~python
+fn1 = lambda *args: args
+print(fn1(10, 20, 30))
+# 返回值为元组
+~~~
+
+![image-20220705164635021](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207051646103.png)
+
+#### 可变参数：**kwargs
+
+~~~Python
+fn1 = lambda **kwargs: kwargs
+print(fn1(name='python', age=20))
+~~~
+
+![image-20220705170437252](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207051704325.png)
+
+### lambda应用
+
+#### 带判断的lambda
+
+~~~python
+fn1 = lambda a, b: a if a > b else b
+print(fn1(10000, 500))
+~~~
+
+![image-20220705170557575](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207051705653.png)
+
+#### 列表数据按字典key的值排序
+
+~~~python
+students = [
+    {'name': 'Tom', 'age': 20},
+    {'name': 'Rose', 'age': 19},
+    {'name': 'Jack', 'age': 30}
+]
+
+# 按照name值升序排列
+students.sort(key=lambda x: x['name'])
+print(students)
+
+# 按name值降序排列
+students.sort(key=lambda x: x['name'], reverse=True)
+print(students)
+~~~
+
+![image-20220705171304772](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207051713872.png)
+
+## 内置函数
+
+### map()
+
+map(func,lst)，将传入的函数变量func作用到lst变量的每个元素中，并将结果组成新的迭代器返回
+
+~~~python
+# 计算list1序列中各个数字的2次方
+list1 = [1, 2, 3, 4, 5]
+
+
+def func(x):
+    return x ** 2
+
+
+result = map(func, list1)
+print(result)
+print(list(result))
+~~~
+
+![image-20220705172007358](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207051720476.png)
+
+### reduce()
+
+reduce(func,lst)，其中func必须有两个参数。每次func计算的结果继续和序列的下一个元素做累积计算。
+
+> reduce()传入的参数func必须接收2个参数
+
+~~~python
+# 计算list1序列中各个数字的累加和
+import functools
+
+list1 = [1, 2, 3, 4, 5]
+
+
+def func(a, b):
+    return a + b
+
+
+result = functools.reduce(func, list1)
+print(result)
+~~~
+
+![image-20220706094849441](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207060948549.png)
+
+### filter()
+
+filter(func,lst)函数用于过滤序列，过滤掉不符合条件的元素，返回一个filter对象。如果要转换为列表，可以使用list()来转换
+
+~~~python
+list1 = [1, 2, 3, 4, 5]
+
+
+def func(x):
+    return x % 2 == 0
+
+
+result = filter(func, list1)
+print(result)
+print(list(result))
+~~~
+
+![image-20220706095336666](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207060953751.png)
+
 ## 文件操作
+
+文件操作的作用就是把一些内容（数据）存储存放起来，可以让程序下一次执行的时候直接使用，而不必重新制作一份
+
+### 文件的基本操作
+
+#### 打开
+
+使用open函数，可以打开一个已经存在的文件，或创建一个新文件
+
+~~~
+open(name,mode)
+~~~
+
+name：要打开的目标文件名的字符串（可以包含文件所在的具体路径）
+
+mode：设置打开文件的模式（访问模式）：只读、写入、追加等
+
+#### 文件访问模式
+
+| 模式 | 描述                                                         |
+| ---- | ------------------------------------------------------------ |
+| r    | 以只读方式打开文件。文件的指针将会放在文件的开头。（默认模式） |
+| rb   | 以二进制格式打开一个文件用于只读。文件的指针将会放在文件的开头。（默认模式） |
+| r+   | 打开一个文件用于读写。文件指针将会放在文件的开头             |
+| rb+  | 以二进制格式打开一个文件用于只读，文件指针将会放在文件的开头 |
+| w    | 打开一个文件只用于写入。如果该文件已存在，则打开文件，并从开始编辑，即原有内容会被删除。如果文件不存在，创建新文件 |
+| w+   | 打开一个文件用于读写，果该文件已存在，则打开文件，并从开始编辑，即原有内容会被删除。如果文件不存在，创建新文件 |
+| wb+  | 以二进制格式打开一个文件用于读写。果该文件已存在，则打开文件，并从开始编辑，即原有内容会被删除。如果文件不存在，创建新文件 |
+| a    | 打开一个文件用于追加。如果该文件已经存在，文件指针将会放在文件的结尾。也就是说，新内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入 |
+| ab   | 以二进制格式打开一个文件用于追加。如果该文件已经存在，文件指针将会放在文件的结尾。也就是说，新内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入 |
+| a+   | 打开一个文件用于读写。如果该文件已存在，文件指针将会放在文件的结尾。文件打开时会是追加模式。如果文件不存在，创建新文件用于读写 |
+| ab+  | 以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会在文件的结尾。如果该文件不存在，创建新文件用于读写 |
+
+#### 读
+
+##### read()
+
+~~~
+文件对象.read(num)
+~~~
+
+> num表示要从文件中读取的数据长度（单位是字节），如果没有传入num，则是读取文件中的全部数据
+
+~~~Python
+file = open('F:\捷通工作资料\项目资料\武汉银联商务\银联商务(1).txt', encoding='utf-8')
+content = file.read()
+print(content)
+~~~
+
+![image-20220706113308370](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207061133483.png)
+
+##### readlines()
+
+readlines可以按照行的方式把整个文件中的内容进行一次性读取，并且返回一个列表，其中每一行的数据作为一个元素
+
+~~~python
+file = open('F:\捷通工作资料\项目资料\武汉银联商务\银联商务(1).txt', encoding='utf-8')
+content = file.readlines()
+print(content)
+# 关闭文件
+file.close()
+~~~
+
+![image-20220706113007445](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207061130543.png)
+
+##### readline()
+
+readline()一次读取一行内容
+
+~~~python
+file = open('F:\捷通工作资料\项目资料\武汉银联商务\银联商务(1).txt', encoding='utf-8')
+content = file.readline()
+print(f'第一行：{content}')
+content = file.readline()
+print(f'第二行：{content}')
+file.close()
+~~~
+
+![image-20220706113422099](https://raw.githubusercontent.com/zhouwei1997/Image/master/202207061134176.png)
+
+#### seek()函数
+
+作用：用来移动文件指针
+
+~~~
+文件对象.seek(偏移量，起始位置)
+~~~
+
+> 起始位置：
+>
+> - 0：文件开头
+> - 1：当前位置
+> - 2：文件结尾
+
+### 文件备份
+
+需求：用户输入当前目录下任意文件名，程序完成对该文件的备份功能（备份文件名为xxx[备份]后缀）
+
+#### 步骤
+
+- 接收用户输入的文件名
+- 规划备份文件名
+- 备份文件写入数据
+
+#### 实现
+
+~~~python
+# 1、接收用户输入目标文件名
+old_name = input('请输入您要备份的文件名：')
+
+'''
+2、规划备份文件名
+    2.1、提取目标文件后缀
+    2.2、组织备份的文件名，xx[备份]后缀
+'''
+index = old_name.rfind('.')
+if index > 0:
+    postfix = old_name[index:]
+new_name = old_name[:index] + '[备份]' + postfix
+
+'''
+3、备份文件写入数据（数据和原文件一样）
+    3.1、打开源文件和备份文件
+    3.2、将源文件数据写入备份文件
+    3.3、关闭源文件
+'''
+
+old_file = open(old_name, 'rb')
+new_file = open(new_name, 'wb')
+# 将源文件数据写入到备份文件中
+while True:
+    con = old_file.read(1024)
+    if con == 0:
+        break
+    new_file.write(con)
+
+# 关闭文件
+old_file.close()
+new_file.close()
+~~~
+
+## 文件和文件夹操作
+
+1、导入os模块
+
+~~~python
+import os
+~~~
+
+2、使用os模块的相关功能
+
+~~~python 
+os.函数名()
+~~~
+
+### 文件重命名
+
+~~~python
+os.rename(目标文件名，新文件名)
+~~~
+
+### 删除文件
+
+~~~python
+os.remove(目标文件名)
+~~~
+
+### 创建文件夹
+
+~~~python
+os.mkdir(文件夹名称)
+~~~
+
+### 删除文件夹
+
+~~~python
+os.rmdir(文件夹名称)
+~~~
+
+### 获取当前目录
+
+~~~python
+os.getcwd()
+~~~
+
+### 改变默认目录
+
+~~~python
+os.chdir(目录)
+~~~
+
+### 获取目录列表
+
+~~~python
+os.listdir(目录)
+~~~
+
+
 
